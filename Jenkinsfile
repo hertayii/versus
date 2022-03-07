@@ -1,77 +1,29 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'jenkins-slave'
-      yamlFile 'jenkins.yaml'
-    }
+            podTemplate(yaml: """
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        labels:
+          some-label: some-label-value
+      spec:
+        containers:
+        - name: jenkins-slave
+          image: mshaibek/jenkins-slave-312
+          command:
+          - cat
+          tty: true
+          env:
+          - name: DOCKER_HOST
+            value: 'tcp://localhost:2375'
+        - name: dind-daemon
+          image: 'docker:18-dind'
+          command:
+          - dockerd-entrypoint.sh
+          tty: true
+          securityContext:
+            privileged: true
+      """
   }
-  stages {
-    stage ('Manage: Environment') {
-      steps {
-        script {
-          if (env.GIT_BRANCH == 'prod') {
-            stage ('Stage: Production') {
-                env.STAGE = 'prod'
-                sh 'echo ${STAGE}'
-            }
-          } else {
-            stage ('Stage: Development') {
-                env.STAGE = 'dev'
-                sh 'echo ${STAGE}'
-            }
-          }            
-        }
-      }
-    }
-    stage('Image build: WEB') {
-      steps {
-        dir('frontend') {
-          sh 'make build'
-        }
-      }
-    }
-    stage('Image build: API') {
-      steps {
-        dir('backend') {
-          sh 'make build'
-        }
-      }
-    }
-    stage('Push to Repo') {
-            parallel {
-                stage('WEB-repo') {
-                    steps {
-                      dir('frontend') {
-                        sh 'make push'
-                      }
-                    }
-                }
-                stage('API-repo') {
-                    steps {
-                        dir('backend') {
-                          sh 'make push'
-                        }
-                    }
-                }
-            }
-        }
-    stage('Deploy to the EKS cluster') {
-            parallel {
-                stage('WEB') {
-                    steps {
-                      dir('frontend') {
-                        sh 'make deploy'
-                      }
-                    }
-                }
-                stage('API') {
-                    steps {
-                        dir('backend') {
-                          sh 'make deploy'
-                        }
-                    }
-                }
-            }
-        }
-  }
-}
+  
