@@ -25,5 +25,20 @@ pipeline {
           securityContext:
             privileged: true
       """
+    }
   }
-  
+  stages {
+    stage('BUILD') {
+      steps {
+        sh  label: "building" script: "docker-compose up -d"
+      }      
+    }
+    stage('TESTING') {
+      steps {
+        sh  label: "migrating" script: "docker exec -it backend ./manage.py migrate" 
+        sh  label: "migrating" script: "docker exec -it backend ./manage.py loaddata data.json"
+        sh  label: "migrating" script: "docker exec -it backend ./manage.py test"
+      }
+    }
+  }
+}  
