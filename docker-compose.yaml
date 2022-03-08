@@ -17,7 +17,7 @@ services:
     volumes:
       - ./backend:/backend
     env_file:
-      - .env.test
+      - backend/.env.test
     depends_on:
       - db
     links:
