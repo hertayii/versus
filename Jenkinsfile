@@ -30,7 +30,7 @@ pipeline {
   stages {
     stage('BUILD') {
       steps {
-        sh label "building" script "docker-compose up -d"
+        sh 'docker-compose up -d'
       }      
     }
     stage('TESTING') {
