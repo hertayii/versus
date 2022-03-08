@@ -35,9 +35,9 @@ pipeline {
     }
     stage('TESTING') {
       steps {
-        sh  label "migrating" script "docker exec -it backend ./manage.py migrate" 
-        sh  label "migrating" script "docker exec -it backend ./manage.py loaddata data.json"
-        sh  label "migrating" script "docker exec -it backend ./manage.py test"
+        sh  'docker exec -it backend ./manage.py migrate'
+        // sh  label "migrating" script "docker exec -it backend ./manage.py loaddata data.json"
+        // sh  label "migrating" script "docker exec -it backend ./manage.py test"
       }
     }
   }
