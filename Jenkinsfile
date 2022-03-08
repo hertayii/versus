@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml: """
+      yaml """
     apiVersion: v1
     kind: Pod
     metadata:
@@ -30,7 +30,7 @@ pipeline {
   stages {
     stage('BUILD') {
       steps {
-        sh  label "building" script "docker-compose up -d"
+        sh label "building" script "docker-compose up -d"
       }      
     }
     stage('TESTING') {
