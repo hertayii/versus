@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: jenkins
-          image: mshaibek/jenkins-312:latest
+          image: bluewhale666/hertayii:lts
           env:
             - name: JAVA_OPTS
               value: -Djenkins.install.runSetupWizard=false

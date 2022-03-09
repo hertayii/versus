@@ -23,7 +23,6 @@ pipeline {
         - dockerd-entrypoint.sh
         tty: true
         securityContext:
-	  fsGroup: 1000
           privileged: true
     """
     }
