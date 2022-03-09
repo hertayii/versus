@@ -10,7 +10,7 @@ pipeline {
     spec:
       containers:
       - name: jenkins-slave
-        image: bluewhale666/hertayii:1.1
+        image: mshaibek/jenkins-slave-312
         command:
         - cat
         tty: true
