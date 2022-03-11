@@ -7,6 +7,7 @@ pipeline {
     metadata:
       labels:
         some-label: some-label-value
+      namespace: test
     spec:
       containers:
       - name: jenkins-slave
@@ -28,19 +29,10 @@ pipeline {
     }
   } 
   stages {
-    stage('BUILD') {
+    stage('BUILDING FRONTEND') {
       steps {
-	 sh "docker-compose --version"
-        // sh 'docker-compose up -d'
+        sh "./frontend.sh"
       }      
-    }
-    stage('TESTING') {
-      steps {
-        sh  'docker exec -it backend ./manage.py migrate'
-        // sh  label "migrating" script "docker exec -it backend ./manage.py loaddata data.json"
-        // sh  label "migrating" script "docker exec -it backend ./manage.py test"
-      }
-    }
+    }    
   }
 }
-
