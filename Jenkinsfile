@@ -31,7 +31,7 @@ pipeline {
   stages {
     stage('BUILDING FRONTEND') {
       steps {
-        sh "./frontend.sh"
+        sh "./make build"
       }      
     }    
   }
